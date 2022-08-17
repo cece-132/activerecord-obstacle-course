@@ -76,12 +76,14 @@ describe 'ActiveRecord Obstacle Course, Week 2' do
     ]
 
     # ----------------------- Using Ruby -------------------------
-    items = Item.all.map { |item| item unless items_not_included.include?(item) }.compact
+    # items = Item.all.map { |item| item unless items_not_included.include?(item) }.compact
     # ------------------------------------------------------------
 
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
-    binding.pry
+    items = Item.where.not(id: items_not_included)
+    # items = Item.all.reject { |item| items_not_included.include?(item) } 
+    # ^^ this is still ruby
     # ------------------------------------------------------------
 
     # Expectation
@@ -90,6 +92,7 @@ describe 'ActiveRecord Obstacle Course, Week 2' do
 
   it "13. groups an order's items by name" do
     expected_result = [@item_4, @item_2, @item_5, @item_3]
+    order_3_id = @order_3.id
 
     # ----------------------- Using Ruby -------------------------
     order = Order.find(@order_3.id)
@@ -98,6 +101,7 @@ describe 'ActiveRecord Obstacle Course, Week 2' do
 
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
+    grouped_items = Order.find(@order_3.id).items.order(:name)
     # ------------------------------------------------------------
 
     # Expectation
@@ -108,11 +112,12 @@ describe 'ActiveRecord Obstacle Course, Week 2' do
     expected_result = ['Abercrombie', 'Banana Republic', 'Calvin Klein', 'Dickies', 'Eddie Bauer', 'Fox', 'Giorgio Armani', 'Hurley', 'Izod', 'J.crew']
 
     # ----------------------- Using Ruby -------------------------
-    names = Item.all.map(&:name)
+    # names = Item.all.map(&:name)
     # ------------------------------------------------------------
 
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
+    names = Item.pluck(:name)
     # ------------------------------------------------------------
 
     # Expectation
@@ -150,6 +155,8 @@ describe 'ActiveRecord Obstacle Course, Week 2' do
 
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
+    binding.pry
+    names = Order.joins(:items).pluck(:name)
     # ------------------------------------------------------------
 
     # Expectation
