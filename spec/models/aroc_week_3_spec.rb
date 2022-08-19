@@ -28,6 +28,7 @@ describe 'ActiveRecord Obstacle Course, Week 3' do
 
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
+    users = User.joins(:orders, :order_items).order(:name).uniq.pluck(:name)
     # ------------------------------------------------------------
 
     # Expectation
@@ -43,6 +44,7 @@ describe 'ActiveRecord Obstacle Course, Week 3' do
 
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
+    names = Order.joins(:order_items).group(:id).order(created_at: :desc).limit(1).first.items.pluck(:name)
     # ------------------------------------------------------------
 
     # Expectation
@@ -67,6 +69,7 @@ describe 'ActiveRecord Obstacle Course, Week 3' do
 
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
+    items_for_user_3_third_order = Order.joins(:order_items).where(user_id: @user_3.id).uniq[2].items.pluck(:name)
     # ------------------------------------------------------------
 
     # Expectation
@@ -80,6 +83,7 @@ describe 'ActiveRecord Obstacle Course, Week 3' do
 
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
+    average = Order.average(:amount)
     # ------------------------------------------------------------
 
     # Expectation
@@ -92,14 +96,15 @@ describe 'ActiveRecord Obstacle Course, Week 3' do
       order if order.user_id == @user_3.id
     end.select{|i| !i.nil?}
 
-    average = (orders.map(&:amount).inject(:+)) / (orders.count)
+    average_for_user_3 = (orders.map(&:amount).inject(:+)) / (orders.count)
     # -----------------------------------------------------------
 
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
+    average_for_user_3 = Order.where(user_id: @user_3).average(:amount)
     # ------------------------------------------------------------
 
     # Expectation
-    expect(average.to_i).to eq(749)
+    expect(average_for_user_3.to_i).to eq(749)
   end
 end
