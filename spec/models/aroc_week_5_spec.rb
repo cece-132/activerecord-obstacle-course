@@ -163,7 +163,8 @@ describe 'ActiveRecord Obstacle Course, Week 5' do
     Bullet.start_request
 
     # ------------------------------------------------------
-    orders = Order.all # Edit only this line
+    #orders = Order.all # Edit only this line
+    orders = Order.joins(:order_items).where(id: Order.all).includes(:items)
     # ------------------------------------------------------
 
     # Do not edit below this line
