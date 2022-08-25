@@ -78,7 +78,10 @@ describe 'ActiveRecord Obstacle Course, Week 5' do
     # Zoolander       |         24
 
     # ------------------ ActiveRecord Solution ----------------------
-    custom_results = User.joins(:items).select('users.name, count(items) as total_item_count').group(:id).order('users.name')
+    custom_results = User.joins(:items).
+    select('users.name, count(items) as total_item_count').
+    group(:id).
+    order('users.name')
     # ---------------------------------------------------------------
 
     expect(custom_results[0].name).to eq(@user_2.name)
@@ -125,7 +128,10 @@ describe 'ActiveRecord Obstacle Course, Week 5' do
 
     # ------------------ ActiveRecord Solution ----------------------
     # binding.pry
-    data = User.joins(orders: :order_items).select('users.name as user_name, orders.id as order_id, (orders.amount / count(order_items.id)) as avg_item_cost').group('users.name, orders.id').order(user_name: :desc, avg_item_cost: :asc)
+    data = User.joins(orders: :order_items).
+    select('users.name as user_name, orders.id as order_id, (orders.amount / count(order_items.id)) as avg_item_cost').
+    group('users.name, orders.id').
+    order(user_name: :desc, avg_item_cost: :asc)
 
     # ---------------------------------------------------------------
 
@@ -146,7 +152,7 @@ describe 'ActiveRecord Obstacle Course, Week 5' do
     expect([data[14].user_name,data[14].order_id,data[14].avg_item_cost]).to eq([@user_2.name, @order_14.id, 225])
   end
 
-  xit '30. returns the names of items that have been ordered without n+1 queries' do
+  it '30. returns the names of items that have been ordered without n+1 queries' do
     # What is an n+1 query?
     # This video is older, but the concepts explained are still relevant:
     # http://railscasts.com/episodes/372-bullet
