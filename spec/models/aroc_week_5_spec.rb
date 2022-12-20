@@ -127,7 +127,6 @@ describe 'ActiveRecord Obstacle Course, Week 5' do
     # how will you turn this into the proper ActiveRecord commands?
 
     # ------------------ ActiveRecord Solution ----------------------
-    # binding.pry
     data = User.joins(orders: :order_items).
     select('users.name as user_name, orders.id as order_id, (orders.amount / count(order_items.id)) as avg_item_cost').
     group('users.name, orders.id').
